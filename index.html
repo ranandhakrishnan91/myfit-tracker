@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="application-name" content="MyFit Tracker">
+  <meta name="description" content="A private, offline-friendly workout tracker with Excel export and backup.">
+  <title>MyFit Tracker</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">✦</div>
+    <div><div class="brand">myfit</div><div class="brand-sub">YOUR WORKOUT JOURNAL</div></div>
+    <button class="icon-button" id="installBtn" hidden aria-label="Install app">↓</button>
+  </header>
+
+  <main class="container">
+    <section class="welcome">
+      <div>
+        <p class="eyebrow">YOUR FITNESS, YOUR RECORD</p>
+        <h1>Daily workout</h1>
+        <p class="muted">A simple place to track every session.</p>
+      </div>
+      <div class="avatar">💪</div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card"><span class="stat-label">WORKOUTS</span><strong id="totalWorkouts">0</strong><span class="stat-foot">Sessions saved</span></article>
+      <article class="stat-card"><span class="stat-label">THIS WEEK</span><strong id="weekWorkouts">0</strong><span class="stat-foot">Sessions this week</span></article>
+      <article class="stat-card"><span class="stat-label">LATEST WEIGHT</span><strong id="latestWeight">—</strong><span class="stat-foot">Body weight (kg)</span></article>
+  </section>
+
+    <nav class="tabs" aria-label="Main sections">
+      <button class="tab active" data-tab="entry">＋ Add workout</button>
+      <button class="tab" data-tab="history">History</button>
+      <button class="tab" data-tab="backup">Backup & export</button>
+    </nav>
+
+    <section id="entryPanel" class="panel">
+      <div class="section-heading"><div><p class="eyebrow">NEW SESSION</p><h2>Session details</h2></div><span class="pill">1 · DETAILS</span></div>
+      <div class="form-grid">
+        <label>Date<input id="workoutDate" type="date"></label>
+        <label>Body weight (kg)<input id="bodyWeight" type="number" inputmode="decimal" min="0" step="0.1" placeholder="e.g. 72.5"></label>
+        <label>In time<input id="inTime" type="time"></label>
+        <label>Out time<input id="outTime" type="time"></label>
+      </div>
+      <p class="duration-line">Session duration: <strong id="sessionDuration">Not set</strong></p>
+
+      <div class="section-heading exercise-heading"><div><p class="eyebrow">YOUR MOVEMENT</p><h2>Exercises</h2></div><span class="pill">2 · EXERCISES</span></div>
+      <div id="exerciseList"></div>
+      <button class="add-button" id="addExercise">＋ Add another exercise</button>
+      <label class="notes-label">Session notes<textarea id="sessionNotes" rows="3" placeholder="How did you feel? Any pain, progress or observations?"></textarea></label>
+      <button class="primary-button" id="saveWorkout">Save workout <span>→</span></button>
+      <p class="privacy-note">🔒 Your records stay in this browser on this device. Make regular backups.</p>
+    </section>
+
+    <section id="historyPanel" class="panel" hidden>
+      <div class="section-heading"><div><p class="eyebrow">YOUR JOURNEY</p><h2>Workout history</h2></div><span class="pill" id="historyCount">0 RECORDS</span></div>
+      <div id="historyList" class="history-list"></div>
+      <div id="emptyHistory" class="empty-state"><div>📒</div><h3>Your story starts here</h3><p>Save your first workout and it will appear here.</p></div>
+    </section>
+
+    <section id="backupPanel" class="panel" hidden>
+      <div class="section-heading"><div><p class="eyebrow">KEEP IT SAFE</p><h2>Backup & export</h2></div><span class="pill">YOUR DATA</span></div>
+      <article class="action-card"><div class="action-icon">⬇</div><div><h3>Download backup</h3><p>Save all sessions in one JSON file. Use it to restore your records later.</p></div><button class="small-button" id="backupBtn">Backup</button></article>
+      <article class="action-card"><div class="action-icon">⬆</div><div><h3>Restore backup</h3><p>Upload a MyFit JSON backup. Existing records are kept; matching records are not duplicated.</p></div><button class="small-button" id="restoreBtn">Upload</button><input id="restoreFile" type="file" accept=".json,application/json" hidden></article>
+      <article class="action-card"><div class="action-icon">▦</div><div><h3>Export to Excel</h3><p>Download an .xlsx workbook with a session summary and detailed exercise/set rows.</p></div><button class="small-button" id="excelBtn">Export</button></article>
+      <div class="info-box"><strong>Backup tip</strong><p>Download a backup regularly and keep a copy in Google Drive or another safe place. Browser data can be lost if site data is cleared.</p></div>
+      <p class="status-message" id="backupStatus" role="status"></p>
+    </section>
+    <footer>MYFIT TRACKER <span>·</span> MADE FOR YOUR DAILY PROGRESS</footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
